@@ -33,7 +33,7 @@ On clicking the CTA, the booking failed without explanation.
 ### Evidence:
 This clearly shows that the booking fails even after valid input.
 <p align="center">
-  <img src="bugs_evidence/issue_1.jpg" width="50%">
+  <img src="bugs_evidence/issue_1.jpg" width="75%" alt="Booking Failure After CTA">
 </p>
 
 ---
@@ -109,7 +109,7 @@ Although the system correctly blocks booking (CTA disabled), the flow is still c
 ### Evidence:
 It demonstrates that users must manually match beds with guests despite the room indicating full capacity:
 <p align="center">
-  <img src="bugs_evidence/issue_2.png" width="90%">
+  <img src="bugs_evidence/issue_2.png" width="75%" alt="Confusing Capacity Representation & Validation Flow">
 </p>
 
 ---
@@ -252,7 +252,7 @@ This creates a direct contradiction between displayed calculation and final bill
 ### Evidence:
 The following link shows that the system displays **0 nights** while still calculating and showing a non-zero total payable amount:
 <p align="center">
-  <img src="bugs_evidence/issue_4.jpg" width="90%">
+  <img src="bugs_evidence/issue_4.jpg" width="75%" alt="Pricing inconsistency issue">
 </p>
 ---
 
