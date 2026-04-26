@@ -33,7 +33,7 @@ On clicking the CTA, the booking failed without explanation.
 ### Evidence:
 This clearly shows that the booking fails even after valid input.
 <p align="center">
-  <img src="bugs_evidence/issue_1.jpg" width="90%">
+  <img src="bugs_evidence/issue_1.jpg" width="50%">
 </p>
 
 ---
