@@ -107,8 +107,10 @@ Although the system correctly blocks booking (CTA disabled), the flow is still c
 ---
 
 ### Evidence:
-[view screenshot](https://drive.google.com/file/d/11IuO6WKX9H0Vm9GXoh5M1FxGOV0YeilW/view?usp=drive_link)
-This demonstrates that users must manually match beds with guests despite the room indicating full capacity.
+It demonstrates that users must manually match beds with guests despite the room indicating full capacity:
+<p align="center">
+  <img src="bugs_evidence/issue_2.png" width="90%">
+</p>
 
 ---
 
@@ -162,7 +164,7 @@ While testing, I was able to continuously click the "+" button and increase the 
 ---
 
 ### Evidence:
-The following demo clearly shows that users can increase the guest count without any upper limit
+The following demo clearly shows that users can increase the guest count without any upper limit.
 [watch demo](https://drive.google.com/file/d/11myDdft5yIJxeJtWyjvK0O_O0uvAYRTh/view?usp=drive_link)
 
 ---
@@ -249,7 +251,6 @@ This creates a direct contradiction between displayed calculation and final bill
 
 ### Evidence:
 The following link shows that the system displays **0 nights** while still calculating and showing a non-zero total payable amount:
-[view screenshot](https://drive.google.com/file/d/11Y8pmISTgyp-hJjwBJxtu2hy7mkgxbOh/view?usp=drive_link)
 
 ---
 
