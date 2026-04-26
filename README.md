@@ -139,6 +139,11 @@ const totalBeds = Object.values(selectedRooms)
 
 const unassignedGuests = Math.max(0, totalGuests - totalBeds);
 
+// UI feedback
+{unassignedGuests > 0 && (
+  <p>You need {unassignedGuests} more bed{unassignedGuests > 1 ? 's' : ''} to accommodate all guests.</p>
+)}
+
 ```
 ---
 
