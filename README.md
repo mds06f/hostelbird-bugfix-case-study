@@ -268,7 +268,6 @@ This inconsistency directly impacts user trust, as pricing appears unreliable an
 ### Proof of Implementation:
 
 ```javascript
-// Fix: Ensure pricing is calculated only when valid date range exists
 
 const calculateNights = (checkIn, checkOut) => {
   const diff = new Date(checkOut) - new Date(checkIn);
@@ -283,7 +282,6 @@ const calculateTotal = (pricePerNight, nights, beds) => {
   return pricePerNight * nights * beds;
 };
 
-// For UI: Prevent invalid state rendering
 if (nights <= 0) {
   return (
     <p className="text-red-500">
@@ -299,7 +297,8 @@ if (nights <= 0) {
 
 All issues identified in this submission have been implemented and tested in the repository.
 View the complete project here:  
-https://github.com/mds06f/hostelbird-bugfix-case-study
+[Github Repo Link](https://github.com/mds06f/hostelbird-bugfix-case-study)
+
 ---
 ## Final Thoughts
 
