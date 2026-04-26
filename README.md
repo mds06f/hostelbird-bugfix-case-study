@@ -164,8 +164,8 @@ While testing, I was able to continuously click the "+" button and increase the 
 ---
 
 ### Evidence:
-The following demo clearly shows that users can increase the guest count without any upper limit.
-[![watch demo](https://drive.google.com/file/d/11myDdft5yIJxeJtWyjvK0O_O0uvAYRTh/view?usp=drive_link)]
+The following demo clearly shows that users can increase the guest count without any upper limit:
+[watch demo](https://drive.google.com/file/d/11myDdft5yIJxeJtWyjvK0O_O0uvAYRTh/view?usp=drive_link)
 
 ---
 
