@@ -252,7 +252,7 @@ This creates a direct contradiction between displayed calculation and final bill
 ### Evidence:
 The following link shows that the system displays **0 nights** while still calculating and showing a non-zero total payable amount:
 <p align="center">
-  <img src="bugs_evidence/issue_4.jpg" width="75%" alt="Pricing inconsistency issue">
+  <img src="bugs_evidence/issue_4.jpg" width="25%" alt="Pricing inconsistency issue">
 </p>
 ---
 
