@@ -31,8 +31,10 @@ On clicking the CTA, the booking failed without explanation.
 ---
 
 ### Evidence:
-[view screenshot](https://drive.google.com/file/d/11MfnBKE69DAs-yNdC-G4V0dNbZBLlH-u/view?usp=drive_link)
 This clearly shows that the booking fails even after valid input.
+<p align="center">
+  <img src="bugs_evidence/issue_1.png" width="90%">
+</p>
 
 ---
 
