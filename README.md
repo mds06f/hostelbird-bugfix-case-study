@@ -302,7 +302,12 @@ if (nights <= 0) {
 
 ```
 ---
+## Solution Demo (Prototype):
 
+A short walkthrough demonstrating the identified issues and their fixes in action:
+[Click here to Watch Demo](https://drive.google.com/file/d/11y0H4WmYMAhePq6gorqGMgXrRN5vgJ-c/view?usp=drive_link)
+
+---
 ## Repository:
 
 All issues identified in this submission have been implemented and tested in the repository.
