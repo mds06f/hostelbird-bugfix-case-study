@@ -48,7 +48,7 @@ function App() {
       if (totalBeds <= totalGuests) break;
     }
     setSelectedRooms(updatedRooms);
-  }, [guests]); 
+}, [guests]); 
 
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
