@@ -26,30 +26,6 @@ function App() {
   const [guests, setGuests] = useState({ adults: 1, children: 0 });
   const [selectedRooms, setSelectedRooms] = useState({});
 
-  useEffect(() => {
-    const totalGuests = guests.adults + guests.children;
-    let totalBeds = Object.values(selectedRooms).reduce(
-      (sum, qty) => sum + qty,
-      0
-    );
-
-  if (totalBeds <= totalGuests) return;
-
-    let updatedRooms = { ...selectedRooms };
-    for (let roomId of Object.keys(updatedRooms)) {
-      while (updatedRooms[roomId] > 0 && totalBeds > totalGuests) {
-        updatedRooms[roomId] -= 1;
-        totalBeds -= 1;
-
-        if (updatedRooms[roomId] === 0) {
-          delete updatedRooms[roomId];
-        }
-      }
-      if (totalBeds <= totalGuests) break;
-    }
-    setSelectedRooms(updatedRooms);
-}, [guests]); 
-
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
   const [booked, setBooked] = useState(false);
