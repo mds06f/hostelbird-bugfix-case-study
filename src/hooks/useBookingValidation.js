@@ -4,12 +4,11 @@ export const MIN_GUESTS = 1;
 export const CURRENT_YEAR = new Date().getFullYear();
 
 export const validateYearFormat = (dateString) => {
-  if (!dateString) return true; // Allow empty values
+  if (!dateString) return true;
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   if (!dateRegex.test(dateString)) return false;
   
   const year = parseInt(dateString.substring(0, 4));
-  // Year must be 4 digits, between current year and 2999
   return year >= CURRENT_YEAR && year <= 2999;
 };
 
