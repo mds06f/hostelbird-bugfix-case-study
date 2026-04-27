@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import GuestSelector from './components/GuestSelector'
 import RoomSelector from './components/RoomSelector'
 import BookingSummary from './components/BookingSummary'
-import { validateBooking, getToday, formatDateForInput, validateCheckInDate, validateCheckOutDate } from './hooks/useBookingValidation'
+import { validateBooking, getToday, formatDateForInput, validateCheckInDate, validateCheckOutDate, parseLocalDate } from './hooks/useBookingValidation'
 import './index.css'
 
 function App() {
@@ -10,10 +10,10 @@ function App() {
     const today = getToday();
     const checkInDate = new Date(today);
     checkInDate.setDate(checkInDate.getDate() + 1);
-    
+
     const checkOutDate = new Date(today);
     checkOutDate.setDate(checkOutDate.getDate() + 2);
-    
+
     return {
       checkIn: formatDateForInput(checkInDate),
       checkOut: formatDateForInput(checkOutDate)
@@ -28,31 +28,40 @@ function App() {
 
   useEffect(() => {
     const totalGuests = guests.adults + guests.children;
-    let totalBeds = Object.values(selectedRooms).reduce(
-      (sum, qty) => sum + qty,
-      0
-    );
+    setSelectedRooms(prevRooms => {
+      let totalBeds = Object.values(prevRooms).reduce((sum, qty) => sum + qty, 0);
+      if (totalBeds <= totalGuests) return prevRooms;
 
-  if (totalBeds <= totalGuests) return;
-
-    let updatedRooms = { ...selectedRooms };
-    for (let roomId of Object.keys(updatedRooms)) {
-      while (updatedRooms[roomId] > 0 && totalBeds > totalGuests) {
-        updatedRooms[roomId] -= 1;
-        totalBeds -= 1;
-
-        if (updatedRooms[roomId] === 0) {
-          delete updatedRooms[roomId];
+      let updatedRooms = { ...prevRooms };
+      for (let roomId of Object.keys(updatedRooms)) {
+        while (updatedRooms[roomId] > 0 && totalBeds > totalGuests) {
+          updatedRooms[roomId] -= 1;
+          totalBeds -= 1;
+          if (updatedRooms[roomId] === 0) {
+            delete updatedRooms[roomId];
+          }
         }
+        if (totalBeds <= totalGuests) break;
       }
-      if (totalBeds <= totalGuests) break;
-    }
-    setSelectedRooms(updatedRooms);
-  }, [guests]); 
+      return updatedRooms;
+    });
+  }, [guests]);
 
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
+  const [dateError, setDateError] = useState('');
   const [booked, setBooked] = useState(false);
+  const toastTimerRef = useRef(null);
+
+  useEffect(() => {
+    return () => clearTimeout(toastTimerRef.current);
+  }, []);
+
+  // Clear stale errors whenever inputs change
+  useEffect(() => {
+    setApiError('');
+    setDateError('');
+  }, [checkIn, checkOut, guests, selectedRooms]);
 
   const validation = validateBooking(guests, selectedRooms, checkIn, checkOut);
 
@@ -69,25 +78,37 @@ function App() {
     if (loading) return;
 
     setApiError('');
+    setDateError('');
 
     if (!validation.isValid) {
-      setApiError("Please fix booking errors before proceeding.");
       return;
     }
 
-    if (new Date(checkOut) <= new Date(checkIn)) {
-      setApiError("Check-out must be after check-in.");
+    const checkOutDate = parseLocalDate(checkOut);
+    const checkInDate = parseLocalDate(checkIn);
+    if (checkOutDate <= checkInDate) {
+      setDateError("Check-out must be after check-in.");
       return;
     }
 
     setLoading(true);
 
-    await createOrder();
+    try {
+      const result = await createOrder();
 
-    setBooked(true);
-    setTimeout(() => setBooked(false), 4000);
+      if (!result.success) {
+        setApiError(result.message || "Something went wrong. Please try again.");
+        return;
+      }
 
-    setLoading(false);
+      setBooked(true);
+      clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = setTimeout(() => setBooked(false), 4000);
+    } catch (err) {
+      setApiError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -106,17 +127,27 @@ function App() {
             <div className="form-row">
               <div>
                 <label className="form-label">Check-in</label>
-                <input 
+                <input
                   type="date"
                   className="date-input"
                   value={checkIn}
+                  min={formatDateForInput(getToday())}
                   onChange={(e) => {
-                    const validation = validateCheckInDate(e.target.value);
-                    if (!validation.isValid) {
-                      setApiError(validation.message);
+                    const val = e.target.value;
+                    if (!val) return;
+                    const dateValidation = validateCheckInDate(val);
+                    if (!dateValidation.isValid) {
+                      setDateError(dateValidation.error);
                       return;
                     }
-                    setCheckIn(e.target.value);
+                    setDateError('');
+                    setCheckIn(val);
+                    // Auto-adjust checkout if check-in >= checkout
+                    if (val >= checkOut) {
+                      const nextDay = new Date(parseLocalDate(val));
+                      nextDay.setDate(nextDay.getDate() + 1);
+                      setCheckOut(formatDateForInput(nextDay));
+                    }
                   }}
                   onKeyDown={(e) => e.stopPropagation()}
                 />
@@ -124,17 +155,21 @@ function App() {
 
               <div>
                 <label className="form-label">Check-out</label>
-                <input 
-                  type="date" 
+                <input
+                  type="date"
                   className="date-input"
                   value={checkOut}
+                  min={checkIn}
                   onChange={(e) => {
-                    const validation = validateCheckOutDate(e.target.value, checkIn);
-                    if (!validation.isValid) {
-                      setApiError(validation.message);
+                    const val = e.target.value;
+                    if (!val) return;
+                    const dateValidation = validateCheckOutDate(val, checkIn);
+                    if (!dateValidation.isValid) {
+                      setDateError(dateValidation.error);
                       return;
                     }
-                    setCheckOut(e.target.value);
+                    setDateError('');
+                    setCheckOut(val);
                   }}
                   onKeyDown={(e) => e.stopPropagation()}
                 />
@@ -158,11 +193,13 @@ function App() {
         </div>
       </div>
 
-      <BookingSummary 
+      <BookingSummary
         validation={validation}
         onProceed={handleBooking}
         loading={loading}
         apiError={apiError}
+        dateError={dateError}
+        onRetry={handleBooking}
       />
 
       {booked && (
