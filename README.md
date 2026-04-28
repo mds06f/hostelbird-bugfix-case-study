@@ -7,7 +7,7 @@
 ---
 
 ## Overview
-During my exploration of the Hostelbird web platform, I discovered **4 critical issues** that severely degrade the user experience, cause direct revenue loss, and prevent users from completing their core journey—booking a stay.
+During my exploration of the Hostelbird platform, I identified **four critical issues** that degrade user experience, impact conversions, and disrupt the booking flow.
 
 These issues fall under three root problems:
 1. **Broken booking flow** (Order creation failed)
