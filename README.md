@@ -26,7 +26,7 @@ After completing all booking steps and clicking **"Book Now"**, the system throw
 
 ### What I Observed 
 I selected a property, filled in all required details, and proceeded to the final step.
-On clicking the CTA, the booking failed without explanation. 
+On clicking the CTA, the booking failed without proper feedback or a clear recovery option.
 
 ---
 
@@ -39,7 +39,7 @@ This clearly shows that the booking fails even after valid input.
 ---
 
 ### Why It Matters
-This indicates a failure at the system/API level, directly blocking successful order creation.
+This highlights a failure at the system/API level, directly blocking successful order creation.
 - Occurs at **highest user intent stage**
 - No retry or recovery option
 - Leads to **direct booking failure + trust loss**
@@ -56,6 +56,7 @@ This indicates a failure at the system/API level, directly blocking successful o
 ### Proof of Implementation:
 
 ```jsx
+// Handles booking flow with API error handling and retry support
 const handleBooking = async () => {
   try {
     setApiError('');
@@ -136,6 +137,7 @@ The system logic is correct, but the way it is communicated creates confusion fo
 ### Proof of Implementation:
 
 ```jsx
+// Calculate guest-to-bed mismatch for realtime UI feedback
 const totalGuests = guests.adults + guests.children;
 
 const totalBeds = Object.values(selectedRooms)
@@ -164,7 +166,7 @@ While testing, I was able to continuously click the "+" button and increase the 
 ---
 
 ### Evidence:
-The following demo clearly shows that users can increase the guest count without any upper limit:
+The following demo clearly shows that users were able to increase the guest count without any upper limit:
 [watch demo](https://drive.google.com/file/d/11myDdft5yIJxeJtWyjvK0O_O0uvAYRTh/view?usp=drive_link)
 
 ---
@@ -187,54 +189,32 @@ The following demo clearly shows that users can increase the guest count without
 ### Proof of Implementation:
 
 ```jsx
-const MAX_GUESTS_PER_BOOKING = 15;
-const GuestSelector = ({ currentGuests, onChange }) => {
+// Guest limit logic
+const MAX_GUESTS = 15;
 
-  const handleIncrement = () => {
-    if (currentGuests >= MAX_GUESTS_PER_BOOKING) return;
+const totalGuests = guests.adults + guests.children;
+const isAtMax = totalGuests >= MAX_GUESTS;
 
-    onChange(currentGuests + 1);
-  };
+const handleIncrement = (type) => {
+  if (isAtMax) return;
+  onChange({ ...guests, [type]: guests[type] + 1 });
+};
 
-  const handleDecrement = () => {
-    if (currentGuests <= 1) return;
+const handleDecrement = (type) => {
+  if (type === 'adults' && guests.adults <= 1) return;
+  if (type === 'children' && guests.children <= 0) return;
 
-    onChange(currentGuests - 1);
-  };
-
-  return (
-    <div className="flex items-center space-x-4">
-      <button 
-        onClick={handleDecrement} 
-        disabled={currentGuests <= 1}
-      >
-        -
-      </button>
-
-      <span>{currentGuests}</span>
-
-      <button 
-        onClick={handleIncrement} 
-        disabled={currentGuests >= MAX_GUESTS_PER_BOOKING}
-      >
-        +
-      </button>
-
-      {currentGuests >= MAX_GUESTS_PER_BOOKING && (
-        <p className="text-sm text-gray-500">
-          For group bookings, please contact support.
-        </p>
-      )}
-    </div>
-  );
+  onChange({ ...guests, [type]: guests[type] - 1 });
 };
 
 ```
+---
+
 
 ## 4. Pricing Calculation Inconsistency
 
 ### Problem Identified:
-The booking summary shows inconsistent pricing calculations, where the number of nights is displayed as 0, but the total payable amount is still calculated.
+Previously, the booking summary showed inconsistent pricing calculations, where the number of nights was displayed as 0, but the total payable amount was still calculated.
 
 ---
 
@@ -247,6 +227,7 @@ In the booking summary:
   - Total payable amount is shown as ₹2604.66  
 
 This creates a direct contradiction between displayed calculation and final billing.
+
 ---
 
 ### Evidence:
@@ -254,6 +235,7 @@ The following link shows that the system displays **0 nights** while still calcu
 <p align="center">
   <img src="bugs_evidence/issue_4.jpg" width="25%" alt="Pricing inconsistency issue">
 </p>
+
 ---
 
 ### Why It Matters:
@@ -261,7 +243,7 @@ The following link shows that the system displays **0 nights** while still calcu
 - Reduces trust in billing accuracy  
 - Users may hesitate to proceed due to unclear cost calculation  
 
-This inconsistency directly impacts user trust, as pricing appears unreliable and misleading.
+This inconsistency directly impacts user trust and can negatively affect conversion at the final booking stage.
 
 ---
 
@@ -281,14 +263,13 @@ This inconsistency directly impacts user trust, as pricing appears unreliable an
 
 const calculateNights = (checkIn, checkOut) => {
   const diff = new Date(checkOut) - new Date(checkIn);
-  return Math.max(1, diff / (1000 * 60 * 60 * 24));
+  const nights = Math.ceil(diff / (1000 * 60 * 60 * 24));
+  return isNaN(nights) || nights < 0 ? 0 : nights;
 };
 
 const calculateTotal = (pricePerNight, nights, beds) => {
-  if (nights <= 0) {
-    throw new Error("Invalid date selection");
-  }
-
+  if (nights <= 0)
+    return 0;
   return pricePerNight * nights * beds;
 };
 
@@ -302,6 +283,8 @@ if (nights <= 0) {
 
 ```
 ---
+
+
 ## Solution Demo (Prototype):
 
 A short walkthrough demonstrating the identified issues and their fixes in action:
