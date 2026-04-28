@@ -288,9 +288,16 @@ if (nights <= 0) {
 ## Solution Demo (Prototype):
 
 A short walkthrough demonstrating the identified issues and their fixes in action:
-[Click here to Watch Demo](https://drive.google.com/file/d/12U8TPL9yCojE3Fq_vkpDls0qfdPNYWLm/view?usp=drive_link)
-The following demo shows the system after implementing all fixes across booking, validation, and pricing flows.
 
+[Click here to Watch Demo](https://drive.google.com/file/d/12U8TPL9yCojE3Fq_vkpDls0qfdPNYWLm/view?usp=drive_link)
+
+The demo covers:
+- Booking failure handling with retry mechanism  
+- Guest validation limits enforcement  
+- Room selection and guest-to-bed consistency  
+- Pricing accuracy based on valid date selection  
+
+The following demo shows the system after implementing all fixes across booking, validation, and pricing flows.
 ---
 ## Repository:
 
