@@ -298,13 +298,17 @@ The demo covers:
 - Pricing accuracy based on valid date selection  
 
 The following demo shows the system after implementing all fixes across booking, validation, and pricing flows.
+
 ---
-## Repository:
+## Repository and Additional Resources:
 
 All identified issues have been implemented and tested in the repository.
 
 View the complete project here:  
 [GitHub Repository](https://github.com/mds06f/hostelbird-bugfix-case-study)
+
+Detailed issue breakdowns, supporting materials, and demo recordings of the implemented solutions are available here:
+[View Google Drive Folder](https://drive.google.com/drive/folders/116TrednSemTv1Sd0-6XdiUo6HQsHuKzX?usp=drive_link)
 
 ---
 ## Final Thoughts
