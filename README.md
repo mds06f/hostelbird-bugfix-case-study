@@ -16,6 +16,8 @@ These issues fall under three root problems:
 
 Below is a structured breakdown of each issue, its impact, the proposed solution, and the corresponding implementation:
 
+---
+
 ## 1. Booking Failure After CTA
 
 ### Problem
