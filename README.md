@@ -12,11 +12,9 @@ During my exploration of the Hostelbird platform, I identified **four critical i
 These issues fall under three root problems:
 1. **Broken booking flow** (Order creation failed)
 2. **Inconsistent validation** (Unrealistic inputs allowed)
-3. **Mismatch between UI and backend logic** (Capacity v/s booking inconsistencies)
+3. **Mismatch between UI and system logic** (Capacity v/s booking inconsistencies)
 
-Below is a detailed breakdown of each problem, why it matters, the proposed solution, and the proof of implementation:
-
----
+Below is a structured breakdown of each issue, its impact, the proposed solution, and the corresponding implementation:
 
 ## 1. Booking Failure After CTA
 
