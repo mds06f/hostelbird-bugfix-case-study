@@ -301,18 +301,19 @@ The following demo shows the system after implementing all fixes across booking,
 ---
 ## Repository:
 
-All issues identified in this submission have been implemented and tested in the repository.
+All identified issues have been implemented and tested in the repository.
+
 View the complete project here:  
-[Github Repo Link](https://github.com/mds06f/hostelbird-bugfix-case-study)
+[GitHub Repository](https://github.com/mds06f/hostelbird-bugfix-case-study)
 
 ---
 ## Final Thoughts
 
 The identified issues highlight key gaps in booking reliability, validation logic, and pricing consistency.
 
-Addressing these problems will:
-- Improve booking success rate
-- Reduce user confusion
-- Increase trust in pricing and system behavior
+Addressing these problems:
+- Improves booking success rate  
+- Reduces user confusion  
+- Strengthens trust in pricing and system behavior  
 
-Overall, the focus is on aligning system logic with user expectations while ensuring a smooth and reliable booking experience.
+Overall, the focus is on aligning system logic with user expectations to deliver a smooth, consistent, and reliable booking experience.
